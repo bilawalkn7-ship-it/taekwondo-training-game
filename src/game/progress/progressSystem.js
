@@ -1,0 +1,30 @@
+export const initialGameState = {
+  mode: 'menu',
+  selectedTechnique: 'frontKick',
+  selectedLesson: null,
+  activeChallenge: null,
+  profile: null,
+  objective: '',
+  score: 0,
+  timer: 0,
+  practiceStep: 0,
+  feedback: 'Ready to begin.',
+  drillComplete: false,
+  performance: {
+    accuracy: 0,
+    timing: 0,
+    reaction: 0,
+    repetitions: 0
+  }
+};
+
+export function createInitialGameState(profile) {
+  return {
+    ...initialGameState,
+    profile,
+    mode: 'menu',
+    selectedTechnique: 'frontKick'
+  };
+}
+
+export default initialGameState;

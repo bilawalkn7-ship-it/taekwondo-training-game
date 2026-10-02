@@ -1,0 +1,25 @@
+export const lessons = [
+  {
+    id: 'stance-foundations',
+    title: 'Stance and Guard Fundamentals',
+    level: 'Beginner',
+    techniqueIds: ['guardBlock'],
+    description: 'Build a stable platform and a safe guard before learning strikes.'
+  },
+  {
+    id: 'front-kick-intro',
+    title: 'Front Kick Introduction',
+    level: 'Beginner',
+    techniqueIds: ['frontKick'],
+    description: 'Learn the essential balance, chamber, extension, and reset for a front kick.'
+  },
+  {
+    id: 'advanced-kicks',
+    title: 'Advanced Kick Mechanics',
+    level: 'Intermediate',
+    techniqueIds: ['roundhouseKick'],
+    description: 'Refine hip rotation and timing for more advanced movement.'
+  }
+];
+
+export default lessons;

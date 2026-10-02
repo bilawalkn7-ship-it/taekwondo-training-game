@@ -1,0 +1,530 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0c1220;
+  --panel: rgba(17, 24, 39, 0.9);
+  --panel-alt: rgba(15, 23, 42, 0.75);
+  --primary: #22c55e;
+  --accent: #fbbf24;
+  --danger: #ef4444;
+  --text: #e5f0ff;
+  --muted: #aabacd;
+  --border: rgba(148, 163, 184, 0.22);
+  --shadow: 0 20px 40px rgba(0, 0, 0, 0.24);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #13253f, var(--bg) 42%);
+  color: var(--text);
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  min-height: 72vh;
+}
+
+.sidebar,
+.content-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.sidebar {
+  padding: 18px;
+}
+
+.content-panel {
+  padding: 22px;
+}
+
+.nav-list,
+.technique-list,
+.challenge-list,
+.progress-list,
+.lesson-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-button,
+.technique-button,
+.primary-button,
+.secondary-button,
+.action-button {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: rgba(148, 163, 184, 0.08);
+  color: var(--text);
+  cursor: pointer;
+  transition: 0.2s ease;
+  text-align: left;
+}
+
+.nav-button:hover,
+.technique-button:hover,
+.primary-button:hover,
+.secondary-button:hover,
+.action-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+.nav-list li + li,
+.technique-list li + li,
+.challenge-list li + li,
+.progress-list li + li,
+.lesson-list li + li {
+  margin-top: 10px;
+}
+
+.nav-button.active,
+.technique-button.active {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.22), rgba(14, 165, 233, 0.18));
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.primary-button {
+  background: linear-gradient(135deg, var(--primary), #16a34a);
+  color: #04150b;
+  font-weight: 700;
+  text-align: center;
+}
+
+.secondary-button,
+.action-button {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.3);
+  text-align: center;
+}
+
+.panel-heading {
+  margin: 0 0 14px;
+  font-size: 1.4rem;
+}
+
+.small-label {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.card {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.technique-detail {
+  display: grid;
+  gap: 16px;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(250, 204, 21, 0.15);
+  color: #fde68a;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.instruction-list,
+.tip-list,
+.mistsake-list {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.training-panel,
+.sparring-panel,
+.progress-panel,
+.menu-panel {
+  display: grid;
+  gap: 16px;
+}
+
+.training-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 16px;
+}
+
+.practice-box {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(14, 165, 233, 0.09));
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.practice-stage {
+  position: relative;
+  min-height: 280px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(17, 24, 39, 0.9), rgba(15, 23, 42, 0.7));
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  overflow: hidden;
+}
+
+.stage-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  height: 4px;
+  background: rgba(240, 244, 248, 0.25);
+}
+
+.target-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 90px;
+  width: 120px;
+  height: 120px;
+  transform: translateX(-50%);
+  border: 3px solid rgba(250, 204, 21, 0.5);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-weight: 800;
+  box-shadow: 0 0 40px rgba(250, 204, 21, 0.25);
+}
+
+.fighter-silhouette {
+  position: absolute;
+  left: 50%;
+  bottom: 54px;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 160px;
+  background: linear-gradient(180deg, #60a5fa, #1d4ed8);
+  border-radius: 30px 30px 18px 18px;
+  border: 3px solid rgba(255,255,255,0.2);
+}
+
+.fighter-silhouette::before,
+.fighter-silhouette::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 72px;
+  background: #cfe0ff;
+  top: 55px;
+  border-radius: 12px;
+}
+
+.fighter-silhouette::before {
+  left: -16px;
+}
+
+.fighter-silhouette::after {
+  right: -16px;
+}
+
+.practice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.timer-bar,
+.score-bar {
+  width: 100%;
+  height: 12px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.timer-fill,
+.score-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #38bdf8);
+  transition: width 0.15s ease;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.metric {
+  background: rgba(148, 163, 184, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.metric strong {
+  display: block;
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin-top: 6px;
+}
+
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.health-bar {
+  width: 100%;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.health-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #22c55e, #84cc16);
+  transition: width 0.15s ease;
+}
+
+.health-fill.enemy {
+  background: linear-gradient(90deg, #fbbf24, #ef4444);
+}
+
+.fighter-box {
+  display: grid;
+  gap: 10px;
+}
+
+.arena {
+  position: relative;
+  width: 100%;
+  min-height: 340px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #13253f, #0f172a 54%, #111827 100%);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  overflow: hidden;
+}
+
+.arena::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), transparent 18%, transparent 88%, rgba(0,0,0,0.14));
+}
+
+.arena-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 58px;
+  background: linear-gradient(180deg, #1f2937, #111827);
+  border-top: 2px solid rgba(255,255,255,0.15);
+}
+
+.fighter {
+  position: absolute;
+  bottom: 60px;
+  width: 90px;
+  height: 160px;
+  transition: transform 0.1s ease;
+}
+
+.fighter .torso {
+  position: absolute;
+  left: 24px;
+  top: 30px;
+  width: 42px;
+  height: 70px;
+  background: #60a5fa;
+  border-radius: 14px 14px 8px 8px;
+}
+
+.fighter.enemy .torso {
+  background: #f97316;
+}
+
+.fighter .head {
+  position: absolute;
+  left: 31px;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f1c9a1;
+}
+
+.fighter .arm.left,
+.fighter .arm.right,
+.fighter .leg.left,
+.fighter .leg.right {
+  position: absolute;
+  background: #dbeafe;
+  border-radius: 10px;
+}
+
+.fighter .arm.left,
+.fighter .arm.right {
+  top: 48px;
+  width: 12px;
+  height: 60px;
+}
+
+.fighter .arm.left {
+  left: 12px;
+  transform: rotate(18deg);
+}
+
+.fighter .arm.right {
+  right: 12px;
+  transform: rotate(-18deg);
+}
+
+.fighter .leg.left,
+.fighter .leg.right {
+  top: 96px;
+  width: 16px;
+  height: 58px;
+}
+
+.fighter .leg.left { left: 28px; }
+.fighter .leg.right { right: 28px; }
+
+.fighter.enemy .arm.left,
+.fighter.enemy .arm.right,
+.fighter.enemy .leg.left,
+.fighter.enemy .leg.right {
+  background: #fed7aa;
+}
+
+.fighter .attack-ring {
+  position: absolute;
+  top: 55px;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(250, 204, 21, 0.2);
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+.fighter .attack-ring.active {
+  opacity: 1;
+  width: 150px;
+  height: 150px;
+}
+
+.reaction-box {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #d1fae5;
+  min-height: 52px;
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.progress-card {
+  background: rgba(148, 163, 184, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.progress-card h3 {
+  margin: 0 0 8px;
+  font-size: 0.98rem;
+}
+
+.progress-card .value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.challenge-item,
+.lesson-item {
+  background: rgba(148, 163, 184, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .training-grid {
+    grid-template-columns: 1fr;
+  }
+}

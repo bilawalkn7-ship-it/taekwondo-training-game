@@ -1,0 +1,25 @@
+export const dailyChallenges = [
+  {
+    id: 'front-kick-20',
+    title: 'Perform 20 correct front kicks',
+    target: 20,
+    type: 'frontKick'
+  },
+  {
+    id: 'guard-drill',
+    title: 'Hold the guard for 30 seconds',
+    target: 30,
+    type: 'guardBlock'
+  }
+];
+
+export const weeklyChallenges = [
+  {
+    id: 'sparring-round',
+    title: 'Finish a sparring round without losing guard',
+    target: 1,
+    type: 'sparring'
+  }
+];
+
+export default { dailyChallenges, weeklyChallenges };

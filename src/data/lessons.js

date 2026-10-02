@@ -1,0 +1,80 @@
+export const techniqueCatalog = {
+  frontKick: {
+    id: 'frontKick',
+    name: 'Front Kick',
+    category: 'Kicks',
+    level: 'Beginner',
+    description: 'A direct front kick that drives the foot forward with the heel or ball of the foot toward the target.',
+    purpose: 'Develops forward power, balance, and precise distance control.',
+    bodyPosition: 'Stand in a balanced fighting stance, chamber the knee upward, keep the guard high, and extend the heel forward.',
+    commonMistakes: [
+      'Dropping the supporting knee and losing balance',
+      'Kicking with the toe instead of the ball or heel',
+      'Lean back or snap the hip before the kick is chambered',
+      'Leaving the guard down during execution'
+    ],
+    safetyTips: [
+      'Keep the kick controlled and DO NOT strike with excessive force',
+      'Stop the kick before the foot crosses the opponent\'s center line in a learning drill',
+      'Practice with a target pad or a safe training distance'
+    ],
+    whenToUse: 'Use it to score and create distance while staying compact and safe.',
+    practiceExercise: 'Chamber the knee, extend the leg forward, return to guard, and repeat 10 controlled reps.',
+    difficulty: 1,
+    target: 'solar plexus / center line',
+    movementKeys: ['forward', 'kick'],
+    prompt: 'Step forward into a balanced stance, chamber your knee, and drive the kick straight ahead.'
+  },
+  roundhouseKick: {
+    id: 'roundhouseKick',
+    name: 'Roundhouse Kick',
+    category: 'Kicks',
+    level: 'Intermediate',
+    description: 'A circular kick that rotates around the hip and uses the shin or instep.',
+    purpose: 'Teaches hip rotation, timing, and lateral power.',
+    bodyPosition: 'Keep the chambered leg bent, pivot the supporting foot, and turn the hips toward the target.',
+    commonMistakes: [
+      'Turning the body too early without chambering the leg',
+      'Dropping the back heel or twisting too much',
+      'Kicking with a weak hip rotation'
+    ],
+    safetyTips: [
+      'Keep the kick under control and avoid over-rotating the torso',
+      'Always practice with a trained partner or target pad'
+    ],
+    whenToUse: 'Use it when the opponent is off-center and you need a circular strike.',
+    practiceExercise: 'Practice the chamber and turn with a slow, controlled motion before full speed.',
+    difficulty: 2,
+    target: 'side of the body / thigh',
+    movementKeys: ['turn', 'kick'],
+    prompt: 'Pivot your base, chamber the knee, and turn the hips while striking around the body.'
+  },
+  guardBlock: {
+    id: 'guardBlock',
+    name: 'Guard Position',
+    category: 'Defense',
+    level: 'Beginner',
+    description: 'A proper guard to protect the face and torso while remaining ready to counter.',
+    purpose: 'Teaches guard retention, defensive posture, and safe distance.',
+    bodyPosition: 'Hands near the chin, elbows in, knees slightly bent, and shoulders relaxed.',
+    commonMistakes: [
+      'Hands too low',
+      'Hands flared away from the face',
+      'Standing stiff instead of balanced'
+    ],
+    safetyTips: [
+      'Never tighten the neck or leave the guard wide open',
+      'Keep movement controlled and disciplined'
+    ],
+    whenToUse: 'Use it before attacking, when absorbing an incoming move, or while resetting distance.',
+    practiceExercise: 'Hold the guard for 20 seconds while moving left and right slowly.',
+    difficulty: 1,
+    target: 'head / torso',
+    movementKeys: ['guard'],
+    prompt: 'Raise your hands to protect the face and torso while keeping your stance stable.'
+  }
+};
+
+export const techniqueList = Object.values(techniqueCatalog);
+
+export default techniqueCatalog;

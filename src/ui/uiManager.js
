@@ -1,0 +1,37 @@
+import { techniqueCatalog } from '../../data/techniques.js';
+
+export class TrainingSystem {
+  constructor(progressSystem) {
+    this.progressSystem = progressSystem;
+  }
+
+  getTechniqueById(id) {
+    return techniqueCatalog[id] || techniqueCatalog.frontKick;
+  }
+
+  evaluateFrontKick(action, state) {
+    const steps = [
+      { label: 'Guard up', ok: action.guardUp },
+      { label: 'Forward step', ok: action.forwardStep },
+      { label: 'Knee chamber', ok: action.kneeChamber },
+      { label: 'Kick extension', ok: action.kickExtension }
+    ];
+
+    const passed = steps.filter((step) => step.ok).length;
+    const score = Math.round((passed / steps.length) * 100);
+
+    if (score >= 75) {
+      state.feedback = 'Excellent form. Your guard stayed high and the kick stayed controlled.';
+      this.progressSystem.updateTechniqueProgress('frontKick', score);
+      state.drillComplete = true;
+    } else if (score >= 50) {
+      state.feedback = 'Good effort. Move your rear foot forward and raise your guard slightly higher.';
+    } else {
+      state.feedback = 'Try again. Keep the kick straight and the stance balanced.';
+    }
+
+    return { score, steps };
+  }
+}
+
+export default TrainingSystem;

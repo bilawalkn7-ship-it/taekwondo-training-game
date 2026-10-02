@@ -1,0 +1,15 @@
+export const defaultProfile = {
+  playerName: 'Student',
+  trainingLevel: 'White Belt',
+  techniquesLearned: ['guardBlock'],
+  accuracy: 0,
+  timing: 0,
+  reactionScore: 0,
+  lessonsCompleted: 0,
+  practiceTimeMinutes: 0,
+  sparringRecord: { wins: 0, losses: 0, draws: 0 },
+  achievements: ['First Steps'],
+  completedChallenges: []
+};
+
+export default defaultProfile;

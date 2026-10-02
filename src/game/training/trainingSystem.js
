@@ -1,0 +1,45 @@
+export class CombatSystem {
+  constructor() {
+    this.lastAttackTime = 0;
+  }
+
+  attemptAttack(attacker, defender, type) {
+    const damageMap = { jab: 8, kick: 15, block: 0 };
+    const rangeMap = { jab: 96, kick: 126 };
+    const baseKnockback = { jab: 180, kick: 230 };
+
+    const distance = Math.abs(attacker.x - defender.x);
+    const sameHeight = Math.abs(attacker.y - defender.y) < 80;
+    const validRange = distance < (rangeMap[type] || 80);
+
+    if (!validRange || !sameHeight) {
+      return false;
+    }
+
+    if (defender.isBlocking) {
+      defender.health = Math.max(0, defender.health - Math.max(1, damageMap[type] * 0.35));
+      defender.vx = (attacker.x < defender.x ? 1 : -1) * 70;
+      return true;
+    }
+
+    defender.health = Math.max(0, defender.health - damageMap[type]);
+    defender.vx = (attacker.x < defender.x ? 1 : -1) * baseKnockback[type];
+    defender.vy = -110;
+    return true;
+  }
+
+  updateAttackState(fighter, dt) {
+    if (!fighter.attackType) {
+      fighter.attackCooldown = Math.max(0, fighter.attackCooldown - dt);
+      return;
+    }
+
+    fighter.attackTimer -= dt;
+    if (fighter.attackTimer <= 0) {
+      fighter.attackType = null;
+      fighter.attackCooldown = fighter.attackType === 'jab' ? 0.33 : 0.48;
+    }
+  }
+}
+
+export default CombatSystem;

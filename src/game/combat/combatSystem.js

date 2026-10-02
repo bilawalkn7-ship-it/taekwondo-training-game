@@ -1,0 +1,42 @@
+export class AIController {
+  constructor() {
+    this.state = {
+      mood: 'beginner',
+      blockTimer: 0,
+      actionCooldown: 0
+    };
+  }
+
+  update(enemy, player, dt) {
+    const dx = player.x - enemy.x;
+    const distance = Math.abs(dx);
+
+    this.state.actionCooldown = Math.max(0, this.state.actionCooldown - dt);
+    this.state.blockTimer = Math.max(0, this.state.blockTimer - dt);
+
+    if (distance > 120) {
+      enemy.x += Math.sign(dx) * 80 * dt;
+    } else if (this.state.actionCooldown <= 0) {
+      if (Math.random() < 0.45) {
+        enemy.attackType = 'jab';
+      } else {
+        enemy.attackType = 'kick';
+      }
+      enemy.attackTimer = enemy.attackType === 'jab' ? 0.2 : 0.35;
+      this.state.actionCooldown = enemy.attackType === 'jab' ? 1.1 : 1.4;
+    }
+
+    if (distance < 100 && Math.random() < 0.08) {
+      enemy.isBlocking = true;
+      this.state.blockTimer = 0.38;
+    } else {
+      enemy.isBlocking = this.state.blockTimer > 0;
+    }
+
+    if (Math.random() < 0.005 && enemy.y >= 60) {
+      enemy.vy = -420;
+    }
+  }
+}
+
+export default AIController;

@@ -1,0 +1,57 @@
+import { defaultProfile } from '../../data/progression.js';
+
+const STORAGE_KEY = 'tkd-progress-profile';
+
+export class ProgressSystem {
+  constructor() {
+    this.profile = this.loadProfile();
+  }
+
+  loadProfile() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : { ...defaultProfile };
+  }
+
+  saveProfile() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.profile));
+  }
+
+  updateTechniqueProgress(techniqueId, score) {
+    const known = new Set(this.profile.techniquesLearned);
+    known.add(techniqueId);
+    this.profile.techniquesLearned = [...known];
+
+    this.profile.accuracy = Math.min(100, Math.max(0, Math.round((this.profile.accuracy + score) / 2)));
+    this.profile.timing = Math.min(100, Math.max(0, this.profile.timing + 2));
+    this.profile.reactionScore = Math.min(100, this.profile.reactionScore + 1);
+    this.profile.lessonsCompleted += score > 70 ? 1 : 0;
+
+    this.saveProfile();
+  }
+
+  recordPracticeMinutes(minutes) {
+    this.profile.practiceTimeMinutes += minutes;
+    this.saveProfile();
+  }
+
+  recordSparring(result) {
+    if (result === 'win') this.profile.sparringRecord.wins += 1;
+    if (result === 'loss') this.profile.sparringRecord.losses += 1;
+    if (result === 'draw') this.profile.sparringRecord.draws += 1;
+    this.saveProfile();
+  }
+
+  completeChallenge(challengeId) {
+    if (!this.profile.completedChallenges.includes(challengeId)) {
+      this.profile.completedChallenges.push(challengeId);
+      this.profile.achievements.push(`Challenge: ${challengeId}`);
+      this.saveProfile();
+    }
+  }
+
+  getProfile() {
+    return this.profile;
+  }
+}
+
+export default ProgressSystem;

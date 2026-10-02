@@ -1,0 +1,396 @@
+import { lessons } from '../data/lessons.js';
+import { techniqueList } from '../data/techniques.js';
+import { dailyChallenges, weeklyChallenges } from '../data/challenges.js';
+
+export class UIManager {
+  constructor(app) {
+    this.app = app;
+    this.content = document.getElementById('content');
+    this.sidebar = document.getElementById('sidebar');
+    this.menuButton = document.getElementById('menu-button');
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    this.menuButton.addEventListener('click', () => this.app.setMode('menu'));
+  }
+
+  render() {
+    this.renderSidebar();
+    this.renderContent();
+  }
+
+  renderSidebar() {
+    const nav = [
+      { id: 'menu', label: 'Main Menu' },
+      { id: 'learn', label: 'Learn' },
+      { id: 'practice', label: 'Practice' },
+      { id: 'sparring', label: 'Sparring' },
+      { id: 'progress', label: 'Progress' }
+    ];
+
+    this.sidebar.innerHTML = `
+      <ul class="nav-list">
+        ${nav
+          .map(
+            (item) => `
+              <li>
+                <button class="nav-button ${this.app.gameState.mode === item.id ? 'active' : ''}" data-nav="${item.id}">
+                  ${item.label}
+                </button>
+              </li>
+            `
+          )
+          .join('')}
+      </ul>
+    `;
+
+    this.sidebar.querySelectorAll('[data-nav]').forEach((button) => {
+      button.addEventListener('click', () => this.app.setMode(button.dataset.nav));
+    });
+  }
+
+  renderContent() {
+    const mode = this.app.gameState.mode;
+
+    if (mode === 'menu') {
+      this.content.innerHTML = this.renderMenu();
+      this.bindMenuActions();
+      return;
+    }
+
+    if (mode === 'learn') {
+      this.content.innerHTML = this.renderLearnPanel();
+      this.bindTechniqueActions();
+      return;
+    }
+
+    if (mode === 'practice') {
+      this.content.innerHTML = this.renderPracticePanel();
+      this.bindPracticeActions();
+      return;
+    }
+
+    if (mode === 'sparring') {
+      this.content.innerHTML = this.renderSparringPanel();
+      this.bindSparringActions();
+      return;
+    }
+
+    if (mode === 'progress') {
+      this.content.innerHTML = this.renderProgressPanel();
+    }
+  }
+
+  renderMenu() {
+    return `
+      <div class="menu-panel">
+        <div>
+          <p class="small-label">Educational simulator</p>
+          <h2 class="panel-heading">Train smarter, not harder</h2>
+        </div>
+
+        <div class="card">
+          <p>
+            This game teaches Taekwondo fundamentals with safe practice drills, guided instruction,
+            and realistic sparring scenarios. It does not replace instruction from a qualified coach.
+          </p>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric">
+            <span class="small-label">Level</span>
+            <strong>${this.app.progress.profile.trainingLevel}</strong>
+          </div>
+          <div class="metric">
+            <span class="small-label">Lessons</span>
+            <strong>${this.app.progress.profile.lessonsCompleted}</strong>
+          </div>
+          <div class="metric">
+            <span class="small-label">Accuracy</span>
+            <strong>${this.app.progress.profile.accuracy}%</strong>
+          </div>
+          <div class="metric">
+            <span class="small-label">Reaction</span>
+            <strong>${this.app.progress.profile.reactionScore}%</strong>
+          </div>
+        </div>
+
+        <div class="practice-actions">
+          <button class="primary-button" data-mode="learn">Learn Fundamentals</button>
+          <button class="secondary-button" data-mode="practice">Practice Drill</button>
+          <button class="secondary-button" data-mode="sparring">Sparring</button>
+        </div>
+      </div>
+    `;
+  }
+
+  bindMenuActions() {
+    this.content.querySelectorAll('[data-mode]').forEach((button) => {
+      button.addEventListener('click', () => this.app.setMode(button.dataset.mode));
+    });
+  }
+
+  renderLearnPanel() {
+    const selected = this.app.getSelectedTechnique();
+
+    return `
+      <div class="technique-detail">
+        <div>
+          <p class="small-label">Technique Library</p>
+          <h2 class="panel-heading">Taekwondo Fundamentals</h2>
+        </div>
+
+        <div class="training-grid">
+          <div class="card">
+            <ul class="technique-list">
+              ${techniqueList
+                .map(
+                  (technique) => `
+                    <li>
+                      <button class="technique-button ${selected.id === technique.id ? 'active' : ''}" data-technique="${technique.id}">
+                        ${technique.name}
+                      </button>
+                    </li>
+                  `
+                )
+                .join('')}
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="meta-row">
+              <span class="badge">${selected.level}</span>
+              <span class="badge">${selected.category}</span>
+            </div>
+
+            <h3>${selected.name}</h3>
+            <p>${selected.description}</p>
+            <p><strong>Purpose:</strong> ${selected.purpose}</p>
+            <p><strong>When to use:</strong> ${selected.whenToUse}</p>
+            <p><strong>Practice drill:</strong> ${selected.practiceExercise}</p>
+
+            <div class="practice-actions">
+              <button class="primary-button" data-mode="practice">Practice This Technique</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Technique breakdown</h3>
+          <p><strong>Body position:</strong> ${selected.bodyPosition}</p>
+          <p><strong>Step-by-step:</strong></p>
+          <ol class="instruction-list">
+            <li>Establish a balanced stance with the heel grounded and the guard up.</li>
+            <li>Chamber the lead knee and load the hip before the extension.</li>
+            <li>Drive through the target while keeping the movement controlled.</li>
+            <li>Return to guard and reset your stance.</li>
+          </ol>
+
+          <p><strong>Common mistakes:</strong></p>
+          <ul class="mistake-list">
+            ${selected.commonMistakes.map((mistake) => `<li>${mistake}</li>`).join('')}
+          </ul>
+
+          <p><strong>Safety tips:</strong></p>
+          <ul class="tip-list">
+            ${selected.safetyTips.map((tip) => `<li>${tip}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+  }
+
+  bindTechniqueActions() {
+    this.content.querySelectorAll('[data-technique]').forEach((button) => {
+      button.addEventListener('click', () => {
+        this.app.gameState.selectedTechnique = button.dataset.technique;
+        this.render();
+      });
+    });
+
+    this.content.querySelectorAll('[data-mode="practice"]').forEach((button) => {
+      button.addEventListener('click', () => this.app.setMode('practice'));
+    });
+  }
+
+  renderPracticePanel() {
+    const selected = this.app.getSelectedTechnique();
+
+    return `
+      <div class="training-panel">
+        <div>
+          <p class="small-label">Practice Drill</p>
+          <h2 class="panel-heading">${selected.name}</h2>
+        </div>
+
+        <div class="training-grid">
+          <div class="practice-box">
+            <div class="practice-stage">
+              <div class="stage-line"></div>
+              <div class="target-indicator">TARGET</div>
+              <div class="fighter-silhouette"></div>
+            </div>
+
+            <div class="practice-actions">
+              <button class="primary-button" data-practice-action="start">Start Drill</button>
+              <button class="secondary-button" data-practice-action="evaluate">Evaluate</button>
+            </div>
+
+            <div class="reaction-box">
+              ${this.app.gameState.feedback || 'Step into your stance and prepare your kick.'}
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="small-label">Technique guidance</div>
+            <p>${selected.prompt}</p>
+            <div class="metric-grid">
+              <div class="metric">
+                <span class="small-label">Accuracy</span>
+                <strong>${this.app.gameState.performance.accuracy || 0}%</strong>
+              </div>
+              <div class="metric">
+                <span class="small-label">Timing</span>
+                <strong>${this.app.gameState.performance.timing || 0}%</strong>
+              </div>
+            </div>
+            <div class="score-bar" style="margin-top: 14px;">
+              <div class="score-fill" style="width: ${this.app.gameState.performance.accuracy || 0}%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  bindPracticeActions() {
+    this.content.querySelectorAll('[data-practice-action="start"]').forEach((button) => {
+      button.addEventListener('click', () => this.app.startPracticeDrill());
+    });
+
+    this.content.querySelectorAll('[data-practice-action="evaluate"]').forEach((button) => {
+      button.addEventListener('click', () => this.app.evaluatePracticeDrill());
+    });
+  }
+
+  renderSparringPanel() {
+    const score = this.app.gameState.score || 0;
+
+    return `
+      <div class="sparring-panel">
+        <div class="hud-row">
+          <div>
+            <p class="small-label">Sparring Mode</p>
+            <h2 class="panel-heading">Controlled Taekwondo Drill</h2>
+          </div>
+          <div class="badge">Score: ${score}</div>
+        </div>
+
+        <div class="fighter-box">
+          <div>
+            <div class="small-label">Player</div>
+            <div class="health-bar"><div class="health-fill" id="player-health-bar" style="width: 100%"></div></div>
+          </div>
+
+          <div>
+            <div class="small-label">AI Opponent</div>
+            <div class="health-bar"><div class="health-fill enemy" id="enemy-health-bar" style="width: 100%"></div></div>
+          </div>
+        </div>
+
+        <div class="arena" id="sparring-arena">
+          <div class="fighter player" id="player-fighter">
+            <div class="head"></div>
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+            <div class="torso"></div>
+            <div class="leg left"></div>
+            <div class="leg right"></div>
+            <div class="attack-ring"></div>
+          </div>
+
+          <div class="fighter enemy" id="enemy-fighter">
+            <div class="head"></div>
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+            <div class="torso"></div>
+            <div class="leg left"></div>
+            <div class="leg right"></div>
+            <div class="attack-ring"></div>
+          </div>
+          <div class="arena-floor"></div>
+        </div>
+
+        <div class="practice-actions">
+          <button class="primary-button" id="start-sparring-btn">Start Round</button>
+          <button class="secondary-button" id="stop-sparring-btn">Stop</button>
+        </div>
+      </div>
+    `;
+  }
+
+  bindSparringActions() {
+    document.getElementById('start-sparring-btn')?.addEventListener('click', () => this.app.startSparring());
+    document.getElementById('stop-sparring-btn')?.addEventListener('click', () => this.app.stopSparring());
+  }
+
+  renderProgressPanel() {
+    const profile = this.app.progress.getProfile();
+
+    return `
+      <div class="progress-panel">
+        <div>
+          <p class="small-label">Progress</p>
+          <h2 class="panel-heading">Player profile</h2>
+        </div>
+
+        <div class="progress-grid">
+          <div class="progress-card">
+            <h3>Training level</h3>
+            <div class="value">${profile.trainingLevel}</div>
+          </div>
+          <div class="progress-card">
+            <h3>Accuracy</h3>
+            <div class="value">${profile.accuracy}%</div>
+          </div>
+          <div class="progress-card">
+            <h3>Timing</h3>
+            <div class="value">${profile.timing}%</div>
+          </div>
+          <div class="progress-card">
+            <h3>Practice time</h3>
+            <div class="value">${profile.practiceTimeMinutes}</div>
+          </div>
+        </div>
+
+        <div class="training-grid">
+          <div class="card">
+            <h3>Completed lessons</h3>
+            <ul class="lesson-list">
+              ${lessons
+                .slice(0, Math.max(1, profile.lessonsCompleted))
+                .map((lesson) => `<li class="lesson-item">${lesson.title}</li>`)
+                .join('') || '<li class="lesson-item">No lessons completed yet</li>'}
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Daily challenges</h3>
+            <ul class="challenge-list">
+              ${dailyChallenges
+                .map((challenge) => `<li class="challenge-item">${challenge.title}</li>`)
+                .join('')}
+            </ul>
+            <h3 style="margin-top: 18px;">Achievements</h3>
+            <ul class="challenge-list">
+              ${profile.achievements.map((achievement) => `<li class="challenge-item">${achievement}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+export default UIManager;
